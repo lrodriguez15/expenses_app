@@ -1,3 +1,4 @@
+import 'package:expenses_app/widgets/new_transaction.dart';
 import 'package:expenses_app/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
 
@@ -39,6 +40,7 @@ class MyHomePage extends StatelessWidget {
               child: Text('CHART!'),
             ),
           ),
+          NewTransaction(),
           TransactionList(),
         ],
       ),
