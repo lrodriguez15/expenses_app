@@ -16,13 +16,16 @@ class MyApp extends StatelessWidget {
         // Primary swatch creates more colors than primary
         primarySwatch: Colors.purple,
         accentColor: Colors.amber,
+        errorColor: Colors.red.shade700,
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
               headline6: TextStyle(
-                  color: Colors.purple,
-                  fontFamily: 'OpenSans',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18),
+                color: Colors.purple,
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+              button: TextStyle(color: Colors.white),
             ),
         appBarTheme: AppBarTheme(
           titleTextStyle: TextStyle(
@@ -72,11 +75,12 @@ class _MyHomePageState extends State<MyHomePage> {
     ).toList();
   }
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(
+      String txTitle, double txAmount, DateTime chosenDate) {
     final newTx = Transaction(
         title: txTitle,
         amount: txAmount,
-        date: DateTime.now(),
+        date: chosenDate,
         id: DateTime.now().toString());
 
     setState(() {
@@ -95,6 +99,12 @@ class _MyHomePageState extends State<MyHomePage> {
             child: NewTransaction(_addNewTransaction),
           );
         });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere(((element) => element.id == id));
+    });
   }
 
   @override
@@ -118,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Chart(_recentTransactions),
               ),
             ),
-            TransactionList(_userTransactions),
+            TransactionList(_userTransactions, _deleteTransaction),
           ],
         ),
       ),
