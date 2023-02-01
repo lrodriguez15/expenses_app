@@ -29,7 +29,7 @@ class Chart extends StatelessWidget {
 
   const Chart(this.recentTrasactions, {super.key});
 
-  double get maxSpending {
+  double get totalSpending {
     return groupedTransactionValues.fold(0.0, (sum, item) {
       return sum + (item['amount'] as double);
     });
@@ -44,13 +44,22 @@ class Chart extends StatelessWidget {
         padding: EdgeInsets.all(10),
         child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: groupedTransactionValues.map((e) {
-              return Flexible(
-                fit: FlexFit.tight,
-                child: ChartBar((e['day'] as String), (e['amount'] as double),
-                    (e['amount'] as double) / maxSpending),
-              );
-            }).toList()),
+            children: groupedTransactionValues
+                .map((e) {
+                  return Flexible(
+                    fit: FlexFit.tight,
+                    child: ChartBar(
+                      (e['day'] as String),
+                      (e['amount'] as double),
+                      totalSpending == 0
+                          ? 0.0
+                          : (e['amount'] as double) / totalSpending,
+                    ),
+                  );
+                })
+                .toList()
+                .reversed
+                .toList()),
       ),
     );
   }
