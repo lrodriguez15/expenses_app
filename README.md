@@ -1,8 +1,16 @@
-# expenses_app
+# Personal Expenses App 
 
-A new Flutter project.
+Expenses tracking app built with flutter 
 
-## Getting Started
+- Flutter 3.3.10 
+- Dart 2.18.6
+- DevTools 2.15.0
+
+Tested in Pixel 3a Android x64 Emulator. 
+
+Styled for Android with Material and IOS with Cupertino. 
+
+<!-- ## Getting Started
 
 This project is a starting point for a Flutter application.
 
@@ -13,4 +21,4 @@ A few resources to get you started if this is your first Flutter project:
 
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+samples, guidance on mobile development, and a full API reference. -->
