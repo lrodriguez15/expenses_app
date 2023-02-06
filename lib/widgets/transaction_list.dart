@@ -39,12 +39,18 @@ class TransactionList extends StatelessWidget {
                 );
               },
             )
-          : ListView.builder(
-              itemBuilder: (ctx, idx) {
-                return TransactionItem(
-                    transaction: transactions[idx], deleteTx: deleteTx);
-              },
-              itemCount: transactions.length,
+          //accept key to remove problem with removing list from element and
+          // taking the deleted widget property.
+          : ListView(
+              children: transactions
+                  .map(
+                    (tx) => TransactionItem(
+                      transaction: tx,
+                      deleteTx: deleteTx,
+                      key: ValueKey(tx.id),
+                    ),
+                  )
+                  .toList(),
             ),
     );
   }

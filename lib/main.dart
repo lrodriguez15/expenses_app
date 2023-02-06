@@ -14,12 +14,19 @@ void main() {
   // WidgetsFlutterBinding.ensureInitialized();
   // SystemChrome.setPreferredOrientations(
   //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = ThemeData(
+      primarySwatch: Colors.purple,
+      fontFamily: 'Quicksand',
+    );
+
     return Platform.isIOS
         ? const CupertinoApp(
             title: 'Personal Expenses',
@@ -32,12 +39,11 @@ class MyApp extends StatelessWidget {
           )
         : MaterialApp(
             title: 'Personal Expenses',
-            theme: ThemeData(
+            theme: theme.copyWith(
+              colorScheme: theme.colorScheme
+                  .copyWith(secondary: Colors.amber, primary: Colors.purple),
               // Primary swatch creates more colors than primary
-              primarySwatch: Colors.purple,
-              accentColor: Colors.amber,
               errorColor: Colors.red.shade700,
-              fontFamily: 'Quicksand',
               textTheme: ThemeData.light().textTheme.copyWith(
                     headline6: const TextStyle(
                       color: Colors.purple,
@@ -67,8 +73,28 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+// Added biding observer to monitor lifecycle of app.
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   // late String titleInput;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // ignore: avoid_print
+    print(state);
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
   final List<Transaction> _userTransactions = [
     // Transaction(
