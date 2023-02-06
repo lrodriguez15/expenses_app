@@ -130,34 +130,110 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  List<Widget> _buildLandscapeContent(
+    MediaQueryData mediaQuery,
+    AppBar appBar,
+    Widget txListWidget,
+  ) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Show Chart',
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          // Automatically adjust the look for iOS
+          Switch.adaptive(
+            activeColor: Theme.of(context).colorScheme.secondary,
+            value: _showChart,
+            onChanged: (bool value) {
+              setState(() {
+                _showChart = value;
+              });
+            },
+          ),
+        ],
+      ),
+      _showChart
+          // ignore: sized_box_for_whitespace
+          ? Container(
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.7,
+              width: double.infinity,
+              child: Card(
+                elevation: 5,
+                child: Chart(_recentTransactions),
+              ),
+            )
+          : txListWidget,
+    ];
+  }
+
+  List<Widget> _buildPortraitContent(
+    MediaQueryData mediaQuery,
+    AppBar appBar,
+    Widget txListWidget,
+  ) {
+    return [
+      // ignore: sized_box_for_whitespace
+      Container(
+        height: (mediaQuery.size.height -
+                appBar.preferredSize.height -
+                mediaQuery.padding.top) *
+            0.3,
+        width: double.infinity,
+        child: Card(
+          elevation: 5,
+          child: Chart(_recentTransactions),
+        ),
+      ),
+      txListWidget,
+    ];
+  }
+
+  Widget _cupertinoNavigationBar(Widget appTitle) {
+    return CupertinoNavigationBar(
+      middle: appTitle,
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            onTap: () => _startAddNewTransaction(context),
+            child: const Icon(CupertinoIcons.add),
+          ),
+        ],
+      ),
+    );
+  }
+
+  PreferredSizeWidget _materialAppBar(Widget appTitle) {
+    return AppBar(
+      title: appTitle,
+      actions: [
+        IconButton(
+          onPressed: (() => _startAddNewTransaction(context)),
+          icon: const Icon(Icons.add),
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
     const appTitle = Text('Personal Expenses');
-    final PreferredSizeWidget appBar = Platform.isIOS
-        ? CupertinoNavigationBar(
-            middle: appTitle,
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  onTap: () => _startAddNewTransaction(context),
-                  child: const Icon(CupertinoIcons.add),
-                ),
-              ],
-            ))
-        : AppBar(title: appTitle, actions: [
-            IconButton(
-              onPressed: (() => _startAddNewTransaction(context)),
-              icon: const Icon(Icons.add),
-            )
-          ]) as PreferredSizeWidget;
+    final Widget appBar = Platform.isIOS
+        ? _cupertinoNavigationBar(appTitle)
+        : _materialAppBar(appTitle);
 
     // ignore: sized_box_for_whitespace
     final txListWidget = Container(
       height: (mediaQuery.size.height -
-              appBar.preferredSize.height -
+              (appBar as PreferredSizeWidget).preferredSize.height -
               mediaQuery.padding.top) *
           0.7,
       child: TransactionList(_userTransactions, _deleteTransaction),
@@ -170,54 +246,11 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             if (isLandscape)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Show Chart',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  // Automatically adjust the look for iOS
-                  Switch.adaptive(
-                    activeColor: Theme.of(context).colorScheme.secondary,
-                    value: _showChart,
-                    onChanged: (bool value) {
-                      setState(() {
-                        _showChart = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
+              ..._buildLandscapeContent(
+                  mediaQuery, appBar as AppBar, txListWidget),
             if (!isLandscape)
-              // ignore: sized_box_for_whitespace
-              Container(
-                height: (mediaQuery.size.height -
-                        appBar.preferredSize.height -
-                        mediaQuery.padding.top) *
-                    0.3,
-                width: double.infinity,
-                child: Card(
-                  elevation: 5,
-                  child: Chart(_recentTransactions),
-                ),
-              ),
-            if (!isLandscape) txListWidget,
-            if (isLandscape)
-              _showChart
-                  // ignore: sized_box_for_whitespace
-                  ? Container(
-                      height: (mediaQuery.size.height -
-                              appBar.preferredSize.height -
-                              mediaQuery.padding.top) *
-                          0.7,
-                      width: double.infinity,
-                      child: Card(
-                        elevation: 5,
-                        child: Chart(_recentTransactions),
-                      ),
-                    )
-                  : txListWidget,
+              ..._buildPortraitContent(
+                  mediaQuery, appBar as AppBar, txListWidget),
           ],
         ),
       ),
