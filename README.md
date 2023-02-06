@@ -1,6 +1,6 @@
 # Personal Expenses App 
 
-Expenses tracking app built with flutter 
+Expenses tracking app built with Flutter 
 
 - Flutter 3.3.10 
 - Dart 2.18.6
