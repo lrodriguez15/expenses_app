@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -14,25 +13,25 @@ class AdaptiveButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Platform.isIOS
         ? CupertinoButton(
+            onPressed: handler,
             child: Text(
               text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
-            onPressed: handler,
           )
         : TextButton(
-            child: Text(
-              text,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
             onPressed: handler,
             style: ButtonStyle(
               foregroundColor:
                   MaterialStateProperty.all(Theme.of(context).primaryColor),
+            ),
+            child: Text(
+              text,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           );
   }

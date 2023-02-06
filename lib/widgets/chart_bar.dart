@@ -14,6 +14,7 @@ class ChartBar extends StatelessWidget {
       builder: (ctx, constraints) {
         return Column(
           children: [
+            // ignore: sized_box_for_whitespace
             Container(
               height: constraints.maxHeight * 0.15,
               child: FittedBox(
@@ -23,6 +24,7 @@ class ChartBar extends StatelessWidget {
             SizedBox(
               height: constraints.maxHeight * 0.05,
             ),
+            // ignore: sized_box_for_whitespace
             Container(
               height: constraints.maxHeight * 0.6,
               width: 10,
@@ -34,7 +36,7 @@ class ChartBar extends StatelessWidget {
                         color: Colors.grey,
                         width: 1.0,
                       ),
-                      color: Color.fromRGBO(220, 220, 220, 1),
+                      color: const Color.fromRGBO(220, 220, 220, 1),
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
@@ -53,6 +55,7 @@ class ChartBar extends StatelessWidget {
             SizedBox(
               height: constraints.maxHeight * 0.05,
             ),
+            // ignore: sized_box_for_whitespace
             Container(
               height: constraints.maxHeight * 0.15,
               child: FittedBox(

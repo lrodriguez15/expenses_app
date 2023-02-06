@@ -1,14 +1,11 @@
-import 'dart:io';
-
 import '../widgets/adaptive_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTx;
 
-  NewTransaction(this.addTx, {super.key});
+  const NewTransaction(this.addTx, {super.key});
 
   @override
   State<NewTransaction> createState() => _NewTransactionState();
@@ -26,6 +23,7 @@ class _NewTransactionState extends State<NewTransaction> {
     final enteredTitle = _titleController.text;
     final enteredAmount = double.parse(_amountController.text);
 
+    // ignore: unnecessary_null_comparison
     if (enteredTitle.isEmpty || enteredAmount <= 0 || _selectedDate == null) {
       return;
     }
@@ -68,16 +66,17 @@ class _NewTransactionState extends State<NewTransaction> {
           ),
           child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
             TextField(
-              decoration: InputDecoration(labelText: 'Title'),
+              decoration: const InputDecoration(labelText: 'Title'),
               controller: _titleController,
               onSubmitted: (_) => _submitData(),
             ),
             TextField(
-              decoration: InputDecoration(labelText: 'Amount'),
+              decoration: const InputDecoration(labelText: 'Amount'),
               controller: _amountController,
               keyboardType: TextInputType.number,
               onSubmitted: (_) => _submitData(),
             ),
+            // ignore: sized_box_for_whitespace
             Container(
               height: 70,
               child: Row(
@@ -92,7 +91,6 @@ class _NewTransactionState extends State<NewTransaction> {
               ),
             ),
             ElevatedButton(
-              child: Text('Add Transaction'),
               style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.all(Theme.of(context).primaryColor),
@@ -100,6 +98,7 @@ class _NewTransactionState extends State<NewTransaction> {
                     Theme.of(context).textTheme.button?.color),
               ),
               onPressed: _submitData,
+              child: const Text('Add Transaction'),
             )
           ]),
         ),

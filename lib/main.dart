@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Platform.isIOS
-        ? CupertinoApp(
+        ? const CupertinoApp(
             title: 'Personal Expenses',
             theme: CupertinoThemeData(
               // Primary swatch creates more colors than primary
@@ -39,15 +39,15 @@ class MyApp extends StatelessWidget {
               errorColor: Colors.red.shade700,
               fontFamily: 'Quicksand',
               textTheme: ThemeData.light().textTheme.copyWith(
-                    headline6: TextStyle(
+                    headline6: const TextStyle(
                       color: Colors.purple,
                       fontFamily: 'OpenSans',
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
-                    button: TextStyle(color: Colors.white),
+                    button: const TextStyle(color: Colors.white),
                   ),
-              appBarTheme: AppBarTheme(
+              appBarTheme: const AppBarTheme(
                 titleTextStyle: TextStyle(
                   fontFamily: 'Quicksand',
                   fontSize: 20,
@@ -55,12 +55,14 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ),
-            home: MyHomePage(),
+            home: const MyHomePage(),
           );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -89,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
       (element) {
         return element.date.isAfter(
           DateTime.now().subtract(
-            Duration(days: 7),
+            const Duration(days: 7),
           ),
         );
       },
@@ -132,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
-    final appTitle = Text('Personal Expenses');
+    const appTitle = Text('Personal Expenses');
     final PreferredSizeWidget appBar = Platform.isIOS
         ? CupertinoNavigationBar(
             middle: appTitle,
@@ -141,17 +143,18 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 GestureDetector(
                   onTap: () => _startAddNewTransaction(context),
-                  child: Icon(CupertinoIcons.add),
+                  child: const Icon(CupertinoIcons.add),
                 ),
               ],
             ))
         : AppBar(title: appTitle, actions: [
             IconButton(
               onPressed: (() => _startAddNewTransaction(context)),
-              icon: Icon(Icons.add),
+              icon: const Icon(Icons.add),
             )
           ]) as PreferredSizeWidget;
 
+    // ignore: sized_box_for_whitespace
     final txListWidget = Container(
       height: (mediaQuery.size.height -
               appBar.preferredSize.height -
@@ -187,6 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             if (!isLandscape)
+              // ignore: sized_box_for_whitespace
               Container(
                 height: (mediaQuery.size.height -
                         appBar.preferredSize.height -
@@ -201,6 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
             if (!isLandscape) txListWidget,
             if (isLandscape)
               _showChart
+                  // ignore: sized_box_for_whitespace
                   ? Container(
                       height: (mediaQuery.size.height -
                               appBar.preferredSize.height -
